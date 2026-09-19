@@ -12,6 +12,8 @@ A secure Express.js REST API implementing user registration, login, password has
 * Protected API route
 * Swagger API documentation
 * JSON REST API
+* Input validation
+* Duplicate email prevention
 
 ## Technologies Used
 
@@ -26,14 +28,20 @@ A secure Express.js REST API implementing user registration, login, password has
 
 ```text
 week-7-express/
+├── api/
+│   └── index.js
 ├── controllers/
 │   └── authController.js
 ├── middleware/
 │   └── authMiddleware.js
 ├── routes/
 │   └── authRoutes.js
+├── node_modules/
 ├── server.js
 ├── package.json
+├── package-lock.json
+├── vercel.json
+├── .gitignore
 └── README.md
 ```
 
@@ -47,27 +55,31 @@ npm install
 
 ## Run Locally
 
-Start the server with:
+Start the server:
 
 ```bash
 npm start
 ```
 
-The API runs on:
+Local API:
 
 ```text
 http://localhost:3000
 ```
 
-## API Endpoints
-
-### Register
+Local Swagger Documentation:
 
 ```text
-POST /auth/register
+http://localhost:3000/api-docs
 ```
 
-Example request:
+## API Endpoints
+
+### Register User
+
+**POST** `/auth/register`
+
+Request body:
 
 ```json
 {
@@ -77,13 +89,11 @@ Example request:
 }
 ```
 
-### Login
+### Login User
 
-```text
-POST /auth/login
-```
+**POST** `/auth/login`
 
-Example request:
+Request body:
 
 ```json
 {
@@ -92,42 +102,23 @@ Example request:
 }
 ```
 
-The login response returns a JWT access token.
+A successful login returns a JWT access token.
 
 ### Protected Route
 
-```text
-GET /protected
-```
+**GET** `/protected`
 
-Requires:
+Requires an Authorization header:
 
 ```text
 Authorization: Bearer <JWT_TOKEN>
 ```
 
+The protected route verifies the JWT using authentication middleware.
+
 ## Security
 
-Passwords are hashed using bcrypt before being stored.
-
-JWT access tokens are generated after successful login and verified through authentication middleware before protected routes can be accessed.
-
-## Swagger Documentation
-
-Local Swagger documentation:
-
-```text
-http://localhost:3000/api-docs
-```
-
-## Live Project
-
-Live Project URL: To be added after deployment.
-
-## GitHub Repository
-
-GitHub Repository URL: To be added after repository creation.
-
-## Validation
-
-The API validates required registration and login fields, prevents duplicate email registration, verifies passwords using bcrypt, and rejects missing, invalid, or expired JWT tokens.
+* Passwords are hashed using bcrypt before being stored.
+* JWT access tokens are generated after successful login.
+* JWT tokens expire after 1 hour.
+* Protect
